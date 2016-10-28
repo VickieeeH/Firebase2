@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      About you
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+    <ion-item>
+      <ion-avatar item-left>
+        <img src="{{userDetails.avatar}}">
+      </ion-avatar>
+      <h2>{{userDetails.fullName}}</h2>
+      <p><em text-right>{{userDetails.provider}}</em></p>
+      <p>{{userDetails.email}}</p>
+    </ion-item>
+  </ion-card>
+  <ion-card>
+    <ion-card-header text-center>
+      <p>
+        A simple public chat
+      </p>
+      <p>
+        Using Firebase + Angularfire2
+      </p>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let message of messages | async">
+          <ion-avatar item-left>
+            <img src="{{ message.avatar }}">
+          </ion-avatar>
+          <p text-right><em>via {{ message.provider }} </em></p>
+          <h5>{{ message.fullName }} said:</h5>
+          <p>{{ message.value }}</p>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<ion-footer>
+    <form [formGroup]="chatControl" (ngSubmit)="sendMessage()">
+      <ion-grid>
+        <ion-row center>
+          <ion-col width-75>
+            <ion-list>
+              <ion-item>
+                <ion-label floating>Type a message</ion-label>
+                <ion-input type="text" [(ngModel)]='message' formControlName="message"></ion-input>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+          <ion-col offset width-25>
+            <button type="submit" full ion-button block color="secondary" [disabled]="!chatControl.valid">Send</button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+</ion-footer>
