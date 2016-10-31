@@ -3,6 +3,7 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { NavController } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import { Loader } from '../../shared/providers/loader';
+import { BarcodeScanner } from 'ionic-native';
 
 @Component({
   selector: 'page-about',
@@ -17,6 +18,8 @@ export class AboutPage {
   messages: FirebaseListObservable<any[]>;
   message: string = '';
 
+  barcodes: FirebaseListObservable<any[]>;
+
   constructor(
     public navCtrl: NavController,
     public af: AngularFire,
@@ -28,10 +31,33 @@ export class AboutPage {
       query: { limitToLast: 5, orderByKey: true }
     });
 
+    this.barcodes = <FirebaseListObservable<any>>
+    af.database.list('barcode', {
+      query: { limitToLast: 5, orderByKey: true }
+    });
+
     // Get details from the user currently logged in
     this.authSubscription = this.af.auth.subscribe((auth) => {
       if (auth) { this.populateUser(auth) }
     });
+  }
+
+  scan(){
+    BarcodeScanner.scan()
+    .then((result) => {
+    if (!result.cancelled) {
+      this.af.database.list('/barcode')
+      .push({
+        fullName: this.userDetails.fullName,
+        provider: this.userDetails.provider,
+        value: result.text
+      });
+      result.text = '';
+    }
+    })
+    .catch((err) => {
+    alert(err);
+    })
   }
 
   sendMessage() {

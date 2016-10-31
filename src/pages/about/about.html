@@ -10,6 +10,10 @@
 </ion-header>
 
 <ion-content padding>
+  <button ion-button (click)="scan()">
+    Click me!
+  </button>
+
   <ion-card>
     <ion-item>
       <ion-avatar item-left>
@@ -41,6 +45,15 @@
         </ion-item>
       </ion-list>
     </ion-card-content>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let barcode of barcodes | async">
+          <p>{{ barcode.value }}</p>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+
   </ion-card>
 </ion-content>
 <ion-footer>

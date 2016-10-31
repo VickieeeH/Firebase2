@@ -40,4 +40,5 @@
         <variable name="APP_ID" value="324861307869819" />
         <variable name="APP_NAME" value="gs1" />
     </plugin>
+    <plugin name="com.unarin.cordova.beacon" spec="https://github.com/petermetz/cordova-plugin-ibeacon.git" />
 </widget>
